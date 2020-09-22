@@ -557,7 +557,7 @@ namespace Agilent_6632B {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Agilent 6632B;component/current_graph.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/663x2A 663xB 661xC Software;component/current_graph.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\Current_Graph.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

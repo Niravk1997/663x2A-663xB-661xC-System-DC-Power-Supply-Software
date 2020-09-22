@@ -7,7 +7,7 @@
     <ProjectGuid>{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Agilent_6632B</RootNamespace>
-    <AssemblyName>Agilent 6632B</AssemblyName>
+    <AssemblyName>663x2A 663xB 661xC Software</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
