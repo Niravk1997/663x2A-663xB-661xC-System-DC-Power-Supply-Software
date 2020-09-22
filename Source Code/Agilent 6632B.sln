@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agilent 6632B", "Agilent 6632B.csproj", "{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3BDBBD-555E-4C7D-86A6-7E8D09417099}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {77331E1C-65A5-4C0F-BF9C-6009E4DDA4F0}
+	EndGlobalSection
+EndGlobal

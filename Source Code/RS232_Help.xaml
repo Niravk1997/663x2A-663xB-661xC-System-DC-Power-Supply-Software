@@ -1,0 +1,42 @@
+﻿<Window x:Class="Agilent_6632B.RS232_Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Agilent_6632B"
+        mc:Ignorable="d"
+        Title="RS232 Help" Height="400" Width="600" ResizeMode="CanMinimize">
+    <Grid>
+        <RichTextBox HorizontalAlignment="Left" Height="368" VerticalAlignment="Top" Width="592" IsReadOnly="True">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="To establish connection with your power supply, you will need a USB to RS232 serial cable or a computer that has a serial port." FontSize="14"/>
+                    <Run Text="You will also require a null modem cable or a null modem adapter(recommended)." FontSize="14"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="How to connect your power supply to computer:" FontSize="19" />
+                    <LineBreak/>
+                    <Run Text="Power Supply Serial Port ---  Null Modem Adapter/Cable --- RS232 Cable --- Computer" FontSize="14"/>
+                    <LineBreak/>
+                    <Run Text="The Serial port on the power supply is type male. So you will need a female to female Null  Modem Cable/Adapter. And, the RS232 serial cable must be of type male. A Serial Gender" FontSize="14"/>
+                    <Run Text="change cable/adapter may be required depending on your setup." FontSize="14"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="RS232 Serial Port Settings:" FontSize="18"/>
+                    <LineBreak/>
+                    <Run Text="The user must make sure that the Serial COM Port is configured for these RS232 settings: " FontSize="14"/>
+                    <Run Text="BaudRate: 9600   DataBits: 8   Parity: None   StopBits: 1   Flow Control: None" FontSize="14"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="Also, make sure that the power supply is configured for these RS232 settings: " FontSize="14"/>
+                    <LineBreak/>
+                    <Run Text="INIF RS232   BaudRate 9600   Parity None    Flow None   Lang SCPI" FontSize="14"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="For further assistance refer to your power supply programming guide or user manual." FontSize="15"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</Window>

@@ -1,0 +1,412 @@
+﻿<Window x:Class="Agilent_6632B.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Agilent_6632B"
+        mc:Ignorable="d"
+        Title="Not Connected ? System DC Power Supply" Height="629" Width="602" ResizeMode="CanMinimize" Loaded="dataUpdater" Closed="Window_Closed">
+    <Grid>
+        <StatusBar Height="30" Width="596" VerticalAlignment="Bottom">
+            <Label x:Name="Runtime" Content="Runtime" Margin="0,0,0,0"/>
+            <Label x:Name="Runtime_timer" Content="00:00:00" Margin="-10,0,0,0"/>
+            <Separator Margin="-3,0,4,0"/>
+            <StatusBarItem x:Name="Output_Status" Content="Output Disabled" Width="93" Height="30" Margin="0,0,2,0"/>
+            <Rectangle x:Name="Output_Box" Fill="Red" Height="20" Width="20" Visibility="Visible"/>
+            <Separator Margin="0,0,0,0"/>
+            <Label Content="Sampled:" Margin="0,-2,-4,0"/>
+            <Label x:Name="VoltSamples" Content="0V" Margin="-10,-2,0,0" Width="69"/>
+            <Label x:Name="CurrSamples" Content="0C" Margin="-7,-2,-2,0" Width="72"/>
+            <Separator Margin="0,0,0,0"/>
+            <Label Content="Update Speed" Margin="-3,-2,0,0" Width="85"/>
+            <ProgressBar x:Name="ProgressBar" Minimum="0" Width="64" Height="20" Margin="-5,0,0,0"/>
+        </StatusBar>
+        <Menu Height="25" Name="Main_Menu" Width="596" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <MenuItem x:Name="Config" Header="_Config" Height="25" Width="50" Margin="5,0,0,0">
+                <MenuItem.ToolTip>
+                    <ToolTip>Select COM Port to start using this software.</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="COM_Port" Header="_Select COM Port" IsCheckable="false" Click="Select_COM_Menu" IsEnabled="True"/>
+                <MenuItem x:Name="Reset" Header="_Reset Device" IsCheckable="false" Click="Reset_Click" IsEnabled="False"/>
+                <MenuItem x:Name="Exit_App" Header="_Exit" IsCheckable="false" Click="Exit_App_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="Edit" Header="_Edit" IsEnabled="False">
+                <MenuItem.ToolTip>
+                    Allows you to reset Timer, Samples, set ProgressBar Speed.
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="Reset_time" Header="Reset Runtime" Click="Reset_time_Click"/>
+                <MenuItem x:Name="Reset_Samples" Header="Reset Sampled Values" IsCheckable="False" IsChecked="False">
+                    <MenuItem x:Name="Reset_vSamples" Header="Reset Volt samples" Click="Reset_vSamples_Click"/>
+                    <MenuItem x:Name="Reset_cSamples" Header="Reset Curr samples" Click="Reset_cSamples_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="UpdateBar" Header="Update Speed ProgressBar" IsCheckable="False" IsChecked="False">
+                    <MenuItem x:Name="Samples100" Header="Progress Bar Full at 100 Samples" IsCheckable="True" IsChecked="True" Click="Samples100_Click"/>
+                    <MenuItem x:Name="Samples1000" Header="Progress Bar Full at 1000 Samples" IsCheckable="True" IsChecked="false" Click="Samples1000_Click"/>
+                    <MenuItem x:Name="Samples10000" Header="Progress Bar Full at 10000 Samples" IsCheckable="True" IsChecked="false" Click="Samples10000_Click"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="Measurements" Header="_Measurements" Height="25" Width="90" Margin="0" IsEnabled="False">
+                <MenuItem.ToolTip>
+                    <ToolTip>Measure Volt, Current. Get CV CC Status, Protection tripped status and more!</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="Device_C_Range" Header="_Measure Current Range" IsCheckable="False" IsChecked="False">
+                    <MenuItem x:Name="Low_Range" Header="_Low Current Range (20mA)" IsCheckable="True" IsChecked="False" Click="Set_Device_C_Range_Low"/>
+                    <MenuItem x:Name="High_Range" Header="_High Current Range (>20mA)" IsCheckable="True" IsChecked="True" Click="Set_Device_C_Range_High"/>
+                </MenuItem>
+                <MenuItem x:Name="Get_Voltage" Header="_Measure Voltage" IsCheckable="True" IsChecked="True" Click="Get_Voltage_Click"/>
+                <MenuItem x:Name="Get_Current" Header="_Measure Current" IsCheckable="True" IsChecked="True" Click="Get_Current_Click"/>
+                <MenuItem x:Name="Get_CVCC_Status" Header="Get CV CC Dis status" IsCheckable="True" IsChecked="True" Click="Get_CVCC_Status_Click"/>
+                <MenuItem x:Name="Get_Protect_Status" Header="_Get Protection status" IsCheckable="True" IsChecked="True" Click="Get_Protect_Status_Click"/>
+                <MenuItem x:Name="Get_SetVC" Header="Get Set Volt &amp; Set Curr" IsCheckable="True" IsChecked="True" Click="Get_SetVC_Click"/>
+                <MenuItem x:Name="Get_SetOV_SetOC" Header="Get Set OVP &amp; OCP Values" IsCheckable="True" IsChecked="True" Click="Get_SetOV_SetOC_Click"/>
+                <MenuItem x:Name="V_Auto_Range" Header="_Voltage Auto Range" IsCheckable="false" IsChecked="false">
+                    <MenuItem x:Name="VDis" Header="_Disable" IsCheckable="True" IsChecked="False" Click="VRang_Dis"></MenuItem>
+                    <MenuItem x:Name="VR2" Header="_V &lt; 200mV" IsCheckable="True" IsChecked="False" Click="VRange_2"/>
+                    <MenuItem x:Name="VR4" Header="_V &lt; 400mV" IsCheckable="True" IsChecked="False" Click="VRange_4"/>
+                    <MenuItem x:Name="VR5" Header="_V &lt; 500mV" IsCheckable="True" IsChecked="False" Click="VRange_5"/>
+                    <MenuItem x:Name="VR8" Header="_V &lt; 800mV" IsCheckable="True" IsChecked="False" Click="VRange_8"/>
+                    <MenuItem x:Name="VR1" Header="_V &lt; 1V"    IsCheckable="True" IsChecked="True"  Click="VRange_1"/>
+                </MenuItem>
+                <MenuItem x:Name="C_Auto_Range" Header="_Current Auto Range" IsCheckable="false" IsChecked="false">
+                    <MenuItem x:Name="CDis" Header="_Disable"      IsCheckable="True" IsChecked="False" Click="CRange_Dis"/>
+                    <MenuItem x:Name="AR2"  Header="_A &lt; 200mA" IsCheckable="True" IsChecked="False" Click="CRange_2"/>
+                    <MenuItem x:Name="AR4"  Header="_A &lt; 400mA" IsCheckable="True" IsChecked="False" Click="CRange_4"/>
+                    <MenuItem x:Name="AR5"  Header="_A &lt; 500mA" IsCheckable="True" IsChecked="False" Click="CRange_5"/>
+                    <MenuItem x:Name="AR8"  Header="_A &lt; 800mA" IsCheckable="True" IsChecked="False" Click="CRange_8"/>
+                    <MenuItem x:Name="AR1"  Header="_A &lt; 1A"    IsCheckable="True" IsChecked="True"  Click="CRange_1"/>
+                </MenuItem>
+                <MenuItem x:Name="P_Auto_Range" Header="_Power Auto Range" IsCheckable="False" IsChecked="False">
+                    <MenuItem x:Name="PDis" Header="_Disable"      IsCheckable="True" IsChecked="False" Click="PRange_Dis"/>
+                    <MenuItem x:Name="PR2"  Header="_W &lt; 200mW" IsCheckable="True" IsChecked="False" Click="PRange_2"/>
+                    <MenuItem x:Name="PR4"  Header="_W &lt; 400mW" IsCheckable="True" IsChecked="False" Click="PRange_4"/>
+                    <MenuItem x:Name="PR5"  Header="_W &lt; 500mW" IsCheckable="True" IsChecked="False" Click="PRange_5"/>
+                    <MenuItem x:Name="PR8"  Header="_W &lt; 800mW" IsCheckable="True" IsChecked="False" Click="PRange_8"/>
+                    <MenuItem x:Name="PR1"  Header="_W &lt; 1W"    IsCheckable="True" IsChecked="True"  Click="PRange_1"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="Graphs" Header="Graphs" IsCheckable="False" IsChecked="False">
+                <MenuItem.ToolTip>
+                    <ToolTip>Show Voltage, Current, Power Graphs. High Ram &amp; CPU Usage.</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="V_Graph" Header="Show Voltage Graph" IsCheckable="False" IsChecked="False" IsEnabled="True">
+                    <MenuItem x:Name="VSamples_50K" Header="50K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_50K_Click"/>
+                    <MenuItem x:Name="VSamples_100K" Header="100K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_100K_Click"/>
+                    <MenuItem x:Name="VSamples_200K" Header="200K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_200K_Click"/>
+                    <MenuItem x:Name="VSamples_500k" Header="500K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_500k_Click"/>
+                    <MenuItem x:Name="VSamples_1M" Header="1M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_1M_Click"/>
+                    <MenuItem x:Name="VSamples_2M" Header="2M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="VSamples_2M_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="C_Graph" Header="Show Current Graph" IsCheckable="False" IsChecked="False" IsEnabled="True">
+                    <MenuItem x:Name="CSamples_50K" Header="50K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_50K_Click"/>
+                    <MenuItem x:Name="CSamples_100K" Header="100K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_100K_Click"/>
+                    <MenuItem x:Name="CSamples_200K" Header="200K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_200K_Click"/>
+                    <MenuItem x:Name="CSamples_500k" Header="500K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_500k_Click"/>
+                    <MenuItem x:Name="CSamples_1M" Header="1M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_1M_Click"/>
+                    <MenuItem x:Name="CSamples_2M" Header="2M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="CSamples_2M_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="P_Graph" Header="Show Power Graph" IsCheckable="False" IsChecked="False" IsEnabled="True">
+                    <MenuItem x:Name="PSamples_50K" Header="50K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_50K_Click"/>
+                    <MenuItem x:Name="PSamples_100K" Header="100K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_100K_Click"/>
+                    <MenuItem x:Name="PSamples_200K" Header="200K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_200K_Click"/>
+                    <MenuItem x:Name="PSamples_500k" Header="500K Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_500k_Click"/>
+                    <MenuItem x:Name="PSamples_1M" Header="1M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_1M_Click"/>
+                    <MenuItem x:Name="PSamples_2M" Header="2M Samples" IsCheckable="False" IsChecked="False" IsEnabled="True" Click="PSamples_2M_Click"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="Output_Panel" Header="_Output Panel" Height="25" Width="85">
+                <MenuItem.ToolTip>
+                    <ToolTip>Set Color of the Main Output Panel</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="Text_Color" Header="_Text Color" IsCheckable="false">
+                    <MenuItem x:Name="Green_Text" Header="_Green" IsCheckable="True" IsChecked="False" Click="Green_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="#FF00FF17" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="Blue_Text" Header="_Blue" IsCheckable="True" IsChecked="True" Click="Blue_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="#FF00C0FF" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="Red_Text" Header="_Red" IsCheckable="True" IsChecked="False" Click="Red_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="Red" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="Yellow_Text" Header="_Yellow" IsCheckable="True" IsChecked="False" Click="Yellow_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="#FFFFFF00" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="Orange_Text" Header="_Orange" IsCheckable="True" IsChecked="False" Click="Orange_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="DarkOrange" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="White_Text" Header="_White" IsCheckable="True" IsChecked="False" Click="White_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="White" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="Black_Text" Header="_Black" IsCheckable="True" IsChecked="False" Click="Black_Text_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="Black" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="Panel_Color" Header="_Panel Color" IsCheckable="false">
+                    <MenuItem x:Name="Black_Panel" Header="_Black" IsCheckable="True"  IsChecked="True" Click="Black_Panel_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="Black" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="White_Panel" Header="_White" IsCheckable="True" IsChecked="False" Click="White_Panel_Click">
+                        <MenuItem.Icon>
+                            <Rectangle Fill="White" Width="16" Height="16"></Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="Data_Logger" Header="_Data Logger" Height="25" Width="80" IsEnabled="False">
+                <MenuItem.ToolTip>
+                    <ToolTip>Save Output readings and Status to Text/CSV File</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="Save_Output" Header="_Save Output" IsCheckable="false">
+                    <MenuItem x:Name="Output_Text_File" Header="_To Text File" IsCheckable="True" IsChecked="False" Click="Output_txtSwitch"/>
+                    <MenuItem x:Name="Output_CSV_File" Header="_To CSV File" IsCheckable="True" IsChecked="False" Click="Output_csvSwitch"/>
+                </MenuItem>
+                <MenuItem x:Name="Save_Status" Header="_Save Status" IsCheckable="False">
+                    <MenuItem x:Name="Status_Text_File" Header="_To Text File" IsCheckable="True" Click="Status_Text_File_Click"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="List" Header="_List" Height="25" Width="35" IsEnabled="False">
+                <MenuItem.ToolTip>
+                    <ToolTip>List options, Disable to reduce RAM usage.</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="AutoScroll" Header="_Auto Scroll" IsCheckable="true" IsChecked="True" Click="switchAutoscroll"/>
+                <MenuItem x:Name="Clear" Header="_Clear List" IsCheckable="true" IsChecked="False" Click="clearListbox"/>
+                <MenuItem x:Name="ListUpdate" Header="_Update List" IsCheckable="true" IsChecked="True" Click="ListUpdate_Click"/>
+                <MenuItem x:Name="Add_Meas_VC" Header="_Add Meas Volt &amp; Curr" IsCheckable="True" IsChecked="False" Click="Add_Meas_VC_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="About" Header="_About" Height="25" Width="50">
+                <MenuItem.ToolTip>
+                    <ToolTip>About 6632B Software</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem x:Name="Help" Header="_Help" IsCheckable="false">
+                    <MenuItem x:Name="RS232_Help" Header="_RS232 Help" IsCheckable="False" Click="RS232_Help_Click"/>
+                    <MenuItem x:Name="General_Help" Header="_General Help" IsCheckable="False" Click="General_Help_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="Credits" Header="_Credits" IsCheckable="False" Click="Credits_Click">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Rectangle x:Name="Output_MainPanel" HorizontalAlignment="Center" Height="160" Width="596" Margin="0,25,0,0" VerticalAlignment="Top" Fill="Black"/>
+        <TextBlock x:Name="Measure_Voltage" HorizontalAlignment="Left" Margin="0,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="60" Height="76" Width="270" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" Text="0V" Foreground="#FF00C0FF">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="Measure_Current" HorizontalAlignment="Right" Margin="0,17,1,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="60" Foreground="#FF00C0FF" Height="76" Width="298" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" Text="0A">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="Calculate_Power" HorizontalAlignment="Right" Margin="0,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="60" Foreground="#FF00C0FF" Height="76" Width="288" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" Text="0W">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="Set_Voltage" HorizontalAlignment="Left" Margin="5,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" Height="30" Width="200" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" FontSize="24" Text="Set: 0V">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="Set_Current" HorizontalAlignment="Right" Margin="0,90,85,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" Height="30" Width="200" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" FontSize="24" Text="Set: 0A">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="CC_CV_Status" HorizontalAlignment="Left" Margin="0,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="60" Foreground="#FF00C0FF" Height="69" Width="85" RenderTransformOrigin="0.5,0.5" TextDecorations="{x:Null}" Text="Dis">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.484"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <ListBox x:Name="Logger" HorizontalAlignment="Right" Height="375" Margin="0,185,0,0" VerticalAlignment="Top" Width="205" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 VirtualizingPanel.IsVirtualizing="true" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.VerticalScrollBarVisibility="Visible" MaxWidth="205" MaxHeight="375" VerticalContentAlignment="Top"/>
+        <GroupBox x:Name="Info_Box" HorizontalAlignment="Left" Height="79" Margin="5,0,0,35" VerticalAlignment="Bottom" Width="371" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="Info_Ellipse" Width="15" Height="15" Fill="Red" Margin="0,0,2,0"/>
+                    <TextBlock FontWeight="Bold">Info</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Label x:Name="Get_Model" Content="Model:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-3,-5,0,0"/>
+                <Label x:Name="Get_Max_Volt" Content="Max Voltage:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-3,9,0,0"/>
+                <Label x:Name="Get_Max_Curr" Content="Max Current:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-3,23,0,0"/>
+                <Label x:Name="COM_Config" Content="Connection:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-3,37,0,-7"/>
+                <GridSplitter HorizontalAlignment="Left" Height="60" Margin="130,-3,0,-1" VerticalAlignment="Top" Width="5" Background="#FFF0F0F0"/>
+                <Button x:Name="Set_Rate" Content="Set" HorizontalAlignment="Left" Margin="298,2,0,0" VerticalAlignment="Top" Width="43" Click="Set_Update_Rate"/>
+                <Label Content="Update Rate (sec):" HorizontalAlignment="Left" Margin="135,-2,0,0" VerticalAlignment="Top"/>
+                <Label Content="Error:" HorizontalAlignment="Left" Margin="135,22,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="Error_Text" Content="Not Checked Yet!" HorizontalAlignment="Left" Margin="169,22,0,0" VerticalAlignment="Top" Width="124"/>
+                <Button x:Name="Get_Error" Content="Get" HorizontalAlignment="Left" Margin="298,25,0,0" VerticalAlignment="Top" Width="43" Click="Get_Error_Click"/>
+                <TextBox x:Name="Update_Rate" HorizontalAlignment="Left" Height="20" Margin="241,2,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="55"/>
+                <Label x:Name="Message" Content="Hi! Click Config, Select COM" HorizontalAlignment="Left" Margin="135,34,0,0" VerticalAlignment="Top" Width="160" Height="26"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="VoltageBox" HorizontalAlignment="Left" Height="86" Margin="5,190,0,0" VerticalAlignment="Top" Width="180" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold">Voltage</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="13" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="13" />
+                    <RowDefinition Height="13" />
+                </Grid.RowDefinitions>
+                <TextBox Name="Voltage_Text_Box"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Left" PreviewKeyDown="Voltage_Input_KeyDOWN" PreviewKeyUp="Voltage_Input_KeyUp" TextChanged="Voltage_Input_TextChanged" FontSize="18" Mouse.MouseWheel="TextBlock_MouseWheel" KeyDown="Voltage_Input_KeyDown"/>
+                <RepeatButton Name="Voltage_Input_UP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Voltage_Up_Click">5</RepeatButton>
+                <RepeatButton Name="Voltage_Input_Down"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="Voltage_Down_Click">6</RepeatButton>
+                <ComboBox x:Name="VRange" HorizontalAlignment="Left" Height="27" Margin="0,0,0,-32" Grid.Row="1" VerticalAlignment="Bottom" Width="46" DropDownClosed="VRange_DropDownClosed">
+                    <ComboBoxItem x:Name="RangeVolt" Content="V" IsSelected="True" IsEnabled="True"></ComboBoxItem>
+                    <ComboBoxItem x:Name="RangemilliVolt" Content="mV" IsEnabled="True"></ComboBoxItem>
+                </ComboBox>
+                <ComboBox x:Name="VIncrement" HorizontalAlignment="Left" Margin="50,0,0,-32" VerticalAlignment="Bottom" Width="52" Height="27" Grid.Row="1" DropDownClosed="VIncrement_DropDownClosed">
+                    <ComboBoxItem x:Name="Increase_2" Content="2" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_1" Content="1" IsEnabled="True" IsSelected="True"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_0_5" Content="0.5" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_0_25" Content="0.25" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                </ComboBox>
+                <Button x:Name="Enter_V" Content="Enter" HorizontalAlignment="Left" Margin="107,0,0,-32" VerticalAlignment="Bottom" Width="60" Height="27" Grid.ColumnSpan="2" Grid.Row="1" Click="Enter_V_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="CurrentBox" HorizontalAlignment="Right" Height="86" Margin="0,190,210,0" VerticalAlignment="Top" Width="180" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold">Current</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="13" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="13" />
+                    <RowDefinition Height="13" />
+                </Grid.RowDefinitions>
+                <TextBox Name="Current_Text_Box"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Left" PreviewKeyDown="Current_Input_KeyDOWN" PreviewKeyUp="Current_Input_KeyUp" TextChanged="Current_Input_TextChanged" FontSize="18" Mouse.MouseWheel="TextBlock_MouseWheel2" KeyDown="Current_Input_KeyDown"/>
+                <RepeatButton Name="Current_Input_Up"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Current_Up_Click">5</RepeatButton>
+                <RepeatButton Name="Current_Input_Down"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="Current_Down_Click">6</RepeatButton>
+                <ComboBox x:Name="ARange" HorizontalAlignment="Left" Height="27" Margin="0,0,0,-32" Grid.Row="1" VerticalAlignment="Bottom" Width="46" DropDownClosed="ARange_DropDownClosed">
+                    <ComboBoxItem x:Name="RangeVolt_2" Content="A" IsSelected="True" IsEnabled="True"></ComboBoxItem>
+                    <ComboBoxItem x:Name="RangemilliVolt_2" Content="mA" IsEnabled="True"></ComboBoxItem>
+                </ComboBox>
+                <ComboBox x:Name="AIncrement" HorizontalAlignment="Left" Margin="50,0,0,-32" VerticalAlignment="Bottom" Width="52" Height="27" Grid.Row="1" DropDownClosed="AIncrement_DropDownClosed">
+                    <ComboBoxItem x:Name="Increase_2_2" Content="2" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_1_2" Content="1" IsEnabled="True" IsSelected="True"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_0_5_2" Content="0.5" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                    <ComboBoxItem x:Name="Increase_0_25_2" Content="0.25" IsEnabled="True" IsSelected="False"></ComboBoxItem>
+                </ComboBox>
+                <Button x:Name="Enter_C" Content="Enter" HorizontalAlignment="Left" Margin="107,0,0,-32" VerticalAlignment="Bottom" Width="60" Height="27" Grid.ColumnSpan="2" Grid.Row="1" Click="Enter_C_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="Output" HorizontalAlignment="Left" Height="76" Margin="5,280,0,0" VerticalAlignment="Top" Width="371" MaxWidth="371" MaxHeight="100" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle x:Name="Output_x" Fill="Red" Height="15" Width="15" Visibility="Visible" Margin="0,0,3,0" />
+                    <TextBlock FontWeight="Bold">Output</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid Margin="0,1,0,1">
+                <TextBlock Text="UVP (UnderVoltage Protection):" Margin="0,5,0,26" Height="20" Width="168" HorizontalAlignment="Left"/>
+                <TextBox x:Name="UVP" Height="20" IsEnabled="True" Margin="169,5,145,26"/>
+                <Button x:Name="UVP_Set" Content="Set" Height="20" Margin="219,5,110,26" Click="UVP_Set_Click"/>
+                <Button x:Name="UVP_Clear" Content="Clear" Height="20" Margin="255,5,71,26" Click="UVP_Clear_Click"/>
+                <TextBlock Text="UCP (UnderCurrent Protection):" Margin="0,30,0,1" Height="20" Width="168" HorizontalAlignment="Left"/>
+                <TextBox x:Name="UCP" Height="20" IsEnabled="True" Margin="169,29,145,2"/>
+                <Button x:Name="UCP_Set" Content="Set" Height="20" Margin="219,29,110,2" Click="UCP_Set_Click"/>
+                <Button x:Name="UCP_Clear" Content="Clear" Height="20" Margin="255,29,71,2" Click="UCP_Clear_Click"/>
+                <Button x:Name="Output_On_Off" Margin="305,8,5,7" Click="Output_On_Off_Click">
+                    <TextBlock x:Name="Output_Control">
+                        Output
+                    <LineBreak>
+                    </LineBreak>
+                        on/off
+                    </TextBlock>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="Protect" HorizontalAlignment="Left" Height="75" Margin="5,0,0,160" VerticalAlignment="Bottom" Width="371" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="Protect_Ellipse" Width="15" Height="15" Fill="Red"/>
+                    <TextBlock FontWeight="Bold" Margin="3,0,0,0">Protection</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <TextBlock Text="OVP (OverVoltage Protection):" Margin="3,3,196,29" Height="20" Width="160" HorizontalAlignment="Left"/>
+                <TextBlock Text="Beep:" Margin="0,2,58,30" Height="20" Width="30" HorizontalAlignment="Right"/>
+                <ComboBox x:Name="Beeper" HorizontalAlignment="Left" Margin="306,-2,0,30" VerticalAlignment="Center" Width="50" Height="24" DropDownClosed="Beeper_DropDownClosed">
+                    <ComboBoxItem x:Name="Yes" Content="Yes" IsEnabled="True" IsSelected="false" ></ComboBoxItem>
+                    <ComboBoxItem x:Name="No" Content="No" IsEnabled="True" IsSelected="true"></ComboBoxItem>
+                </ComboBox>
+                <TextBox x:Name="OVP" Height="20" IsEnabled="True" Margin="166,2,148,30"/>
+                <Button x:Name="OVP_Set" Content="Set" Height="20" Margin="216,2,113,30" Click="OVP_Set_Click"/>
+                <TextBlock Text="OCP (OverCurrent Protection):" Margin="3,31,0,1" Height="20" Width="160" HorizontalAlignment="Left"/>
+                <Button x:Name="OCP_Set" Content="Disabled"  Margin="167,27,113,1" Click="OCP_Set_Click"/>
+                <Button x:Name="Clear_Pro" Content="Clear Protect" Width="85" HorizontalAlignment="Right" Margin="0,27,3,1" Click="Clear_Pro_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="Display" HorizontalAlignment="Left" Height="51" Margin="5,425,0,0" VerticalAlignment="Top" Width="371" IsEnabled="False">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold">Display</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid Margin="0,2,0,0">
+                <TextBlock Text="Display Text:" Margin="0,2,0,-5" Height="20" Width="67" HorizontalAlignment="Left"/>
+                <TextBox x:Name="Send_Text" Height="20" IsEnabled="True" Margin="35,0,160,-3" Text="Hello World!" Width="97"/>
+                <Button x:Name="Text_Send" Content="Send" Height="20" Margin="168,0,158,-3" Click="Text_Send_Click"/>
+                <Button x:Name="Text_Clear" Content="Clear" Height="20" Margin="205,0,118,-3" Click="Text_Clear_Click"  Width="33"/>
+                <Button x:Name="Display_On_Off" Content="Display (on/off)"  Height="20" Margin="263,0,3,-3" Click="Display_On_Off_Click"></Button>
+            </Grid>
+        </GroupBox>
+        <Label x:Name="Under" Content="UVP:&#xD;&#xA;UCP:" HorizontalAlignment="Left" Margin="82,131,0,0" VerticalAlignment="Top" Foreground="#FF00C0FF" Height="54" Width="47" FontSize="18" Background="{x:Null}"/>
+        <Label x:Name="Over" Content="OVP:&#xA;OCP:" HorizontalAlignment="Left" Margin="183,131,0,0" VerticalAlignment="Top" Foreground="#FF00C0FF" Height="54" Width="48" FontSize="18" Background="{x:Null}"/>
+        <TextBlock x:Name="Under_vlabel" HorizontalAlignment="Left" Margin="125,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" FontSize="18" Text="Dis"/>
+        <TextBlock x:Name="Under_clabel" HorizontalAlignment="Left" Margin="125,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" FontSize="18" Text="Dis"/>
+        <TextBlock x:Name="Over_vlabel" HorizontalAlignment="Left" Margin="227,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" FontSize="18"/>
+        <TextBlock x:Name="Over_clabel" HorizontalAlignment="Left" Margin="227,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF00C0FF" FontSize="18"/>
+    </Grid>
+</Window>

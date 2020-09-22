@@ -1,0 +1,68 @@
+﻿<Window x:Class="Agilent_6632B.General_Help_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Agilent_6632B"
+        mc:Ignorable="d"
+        Title="General Help" Height="540" Width="600" ResizeMode="CanMinimize">
+    <Grid>
+        <RichTextBox HorizontalAlignment="Left" Height="507" VerticalAlignment="Top" Width="589" IsReadOnly="True">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="This window will try to explain all the functions of this application:" FontSize="16"/>
+                    <LineBreak/>
+                    <Run Text="Menus:" FontSize="16"/>
+                    <LineBreak/>
+                    <Run Text="Config:"/>
+                    <LineBreak/>
+                    <Run Text="Select COM Port: Click this to open up a window to allow connection to the power supply."/>
+                    <LineBreak/>
+                    <Run Text="Reset Device: Click this to reset the power supply, you must first establish connection."/>
+                    <LineBreak/>
+                    <Run Text="Measurements:"/>
+                    <LineBreak/>
+                    <Run Text="Measure Current Range: The power supply has two internal current ranges"/>
+                    <LineBreak/>
+                    <Run Text="Measure Voltage: Retrives measured voltage value from the power supply"/>
+                    <LineBreak/>
+                    <Run Text="Measure Current: Retrives measured current value from the power supply"/>
+                    <LineBreak/>
+                    <Run Text="Get CV CC Dis status: Retrives data that is used to determined if in CC CV mode."/>
+                    <LineBreak/>
+                    <Run Text="Get Protection status: Retrives data that is used to determine if protection tripped."/>
+                    <LineBreak/>
+                    <Run Text="Get Set Volt and Set Curr: Gets the Set voltage and current. The values set by user."/>
+                    <LineBreak/>
+                    <Run Text="Voltage/Current/Power Auto Range: set Volt, Curr, Watt ranges for display panel."/>
+                    <LineBreak/>
+                    <Run Text="Output Panel:"/>
+                    <LineBreak/>
+                    <Run Text="Text/Panel Color: sets the color of text and the background for the display panel."/>
+                    <LineBreak/>
+                    <Run Text="Data Logger:"/>
+                    <LineBreak/>
+                    <Run Text="Save Output: save the measured V and A values. They be 0, if Volt / Curr not measured."/>
+                    <LineBreak/>
+                    <Run Text="Save Status: saves the user inputs, errors, protection trip status."/>
+                    <LineBreak/>
+                    <Run Text="List:"/>
+                    <LineBreak/>
+                    <Run Text="Auto Scroll: Auto Scroll to the latest entry inside the list."/>
+                    <LineBreak/>
+                    <Run Text="Clear list: Clears the list."/>
+                    <LineBreak/>
+                    <Run Text="Update List: Sets or disables new entries from being added to the list. No effect on save status to text"/>
+                    <LineBreak/>
+                    <Run Text="The Voltage input box allows user to set voltage while the Current box sets current. The Output box allows user"/>
+                    <Run Text="to turn output on or off and set UVP and UCP protection on and off. Warning, these UVP UCP are done on the application side, "/>
+                    <Run Text="they depend on measured voltage and current. The protection box allows user to set OVP and OCP, they are set on the power supply side. "/>
+                    <Run Text="You may also set the beeper to beep when protection is tripped. The Display box allows user to send message to the front panel vfd display "/>
+                    <Run Text="and turn the display on or off. The info box shows the power supply connected info, allow user to change the update rate speed. You can also "/>
+                    <Run Text="check the power supply for any errors by clicking the Get button. Below that, you may see some messages relating to user input and other stuff."/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</Window>

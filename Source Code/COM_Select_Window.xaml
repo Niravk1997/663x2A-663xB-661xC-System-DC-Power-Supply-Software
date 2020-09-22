@@ -1,0 +1,64 @@
+﻿<Window x:Class="Agilent_6632B.COM_Select_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Agilent_6632B"
+        mc:Ignorable="d"
+        Title="Select COM Port" Height="300" Width="500" ResizeMode="NoResize">
+    <Grid>
+        <GroupBox HorizontalAlignment="Left" Height="251" Margin="5,0,0,0" VerticalAlignment="Top" Width="230">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="COM_Refresh" Content="Refresh" Width="50" Height="20" Margin="0" Click="COM_Refresh_Click"/>
+                    <TextBlock FontWeight="Bold" Margin="5,0,0,0">List of COM Ports</TextBlock>
+                </StackPanel>
+            </GroupBox.Header>
+            <ListBox x:Name="COM_List" HorizontalAlignment="Left" Height="219" Margin="-1,5,-2,0" VerticalAlignment="Top" Width="221" MouseDoubleClick="COM_List_MouseDoubleClick"/>
+        </GroupBox>
+        <Label Content="COM Port Number:" HorizontalAlignment="Left" Margin="237,24,0,0" VerticalAlignment="Top"/>
+        <Label Content="Bits per second:" HorizontalAlignment="Left" Margin="255,54,0,0" VerticalAlignment="Top"/>
+        <Label Content="Data bits:" HorizontalAlignment="Left" Margin="288,83,0,0" VerticalAlignment="Top"/>
+        <Label Content="Parity:" HorizontalAlignment="Left" Margin="306,114,0,0" VerticalAlignment="Top"/>
+        <Label Content="Stop bits:" HorizontalAlignment="Left" Margin="289,143,0,0" VerticalAlignment="Top"/>
+        <Label Content="Flow control:" HorizontalAlignment="Left" Margin="270,173,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="COM_Number" HorizontalAlignment="Left" Height="22" Margin="351,25,0,0" TextWrapping="Wrap" Text="COM22" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="baudRate" HorizontalAlignment="Left" Margin="351,55,0,0" VerticalAlignment="Top" Width="100" DropDownClosed="baudRate_DropDownClosed">
+            <ComboBoxItem Content="300" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="600" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="1200" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="2400" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="4800" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="9600" IsSelected="True" IsEnabled="True"/>
+        </ComboBox>
+        <ComboBox x:Name="bits" HorizontalAlignment="Left" Margin="351,85,0,0" VerticalAlignment="Top" Width="100" DropDownClosed="bits_DropDownClosed">
+            <ComboBoxItem Content="4" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="5" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="6" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="7" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="8" IsSelected="True" IsEnabled="True"/>
+        </ComboBox>
+        <ComboBox x:Name="parity" HorizontalAlignment="Left" Margin="351,115,0,0" VerticalAlignment="Top" Width="100" DropDownClosed="parity_DropDownClosed">
+            <ComboBoxItem Content="Even" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="Odd" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="None" IsSelected="True" IsEnabled="True"/>
+            <ComboBoxItem Content="Mark" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="Space" IsSelected="False" IsEnabled="True"/>
+        </ComboBox>
+        <ComboBox x:Name="Stop" HorizontalAlignment="Left" Margin="351,145,0,0" VerticalAlignment="Top" Width="100" DropDownClosed="Stop_DropDownClosed">
+            <ComboBoxItem Content="1" IsSelected="True" IsEnabled="True"/>
+            <ComboBoxItem Content="1.5" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="2" IsSelected="False" IsEnabled="True"/>
+        </ComboBox>
+        <ComboBox x:Name="flow" HorizontalAlignment="Left" Margin="351,175,0,0" VerticalAlignment="Top" Width="100" DropDownClosed="flow_DropDownClosed">
+            <ComboBoxItem Content="Xon/Xoff" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="Hardware" IsSelected="False" IsEnabled="True"/>
+            <ComboBoxItem Content="None" IsSelected="True" IsEnabled="True"/>
+        </ComboBox>
+        <Button x:Name="Connect" Content="Connect" HorizontalAlignment="Right" Margin="0,210,5,0" VerticalAlignment="Top" Width="74" Click="Connect_Click"/>
+        <Button x:Name="Reset" Content="Reset Device" HorizontalAlignment="Right" Margin="0,210,87,0" VerticalAlignment="Top" Width="74" Click="Reset_Click"/>
+        <Button x:Name="Get_Info" Content="Device Info" HorizontalAlignment="Left" Margin="240,210,0,0" VerticalAlignment="Top" Width="74" Click="Get_Info_Click"/>
+        <TextBlock x:Name="Message" HorizontalAlignment="Right" Margin="0,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="245" Height="16" Text="Double click to select COM Port from List."/>
+
+    </Grid>
+</Window>
