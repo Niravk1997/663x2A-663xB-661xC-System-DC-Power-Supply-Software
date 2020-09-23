@@ -1,5 +1,5 @@
 # 66312A, 66332A, 6631B, 6632B, 6633B, 6634B, 6611C, 6612C, 6613C, and 6614C System DC Power Supply Software
-A software to control and log data remotely from HP/Agilent/Keysight 66312A, 66332A, 6631B, 6632B, 6633B, 6634B, 6611C, 6612C, 6613C, and 6614C power supplies using the RS-232 serial interface.
+A software to control and log data remotely from HP/Agilent/Keysight 66312A, 66332A, 6631B, 6632B, 6633B, 6634B, 6611C, 6612C, 6613C, and 6614C power supplies using the RS-232 serial interface. Build for Windows 10, 7, 8, 8.1.
 
 https://youtu.be/n55Bx5ncqkM - Video about using the software
 
