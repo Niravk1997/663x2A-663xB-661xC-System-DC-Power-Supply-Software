@@ -1,7 +1,9 @@
 ﻿using ScottPlot;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,6 +56,11 @@ namespace Agilent_6632B
         public Voltage_Graph(int samples)
         {
             InitializeComponent();
+            if (Thread.CurrentThread.CurrentCulture.Name != "en-US")
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("en-US");
+            }
             Init_Sample_Arrays(samples);
             Initialize_Graph();
 

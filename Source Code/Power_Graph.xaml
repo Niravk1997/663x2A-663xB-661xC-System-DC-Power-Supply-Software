@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Agilent_6632B"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="Power_Graph" Height="450" Width="800">
+        Title="Power_Graph" Height="450" Width="800" Closed="Window_Closed">
     <DockPanel>
         <Menu x:Name="Menu" DockPanel.Dock="Top">
             <MenuItem x:Name="File" Header="File" IsCheckable="False" IsChecked="False">

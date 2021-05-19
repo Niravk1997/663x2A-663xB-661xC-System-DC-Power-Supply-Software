@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -275,6 +277,11 @@ namespace Agilent_6632B
         public MainWindow()
         {
             InitializeComponent();
+            if (Thread.CurrentThread.CurrentCulture.Name != "en-US")
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("en-US");
+            }
             Voltage_Text_Box.Text = lower_V_limit.ToString();
             Current_Text_Box.Text = lower_A_limit.ToString();
         }
@@ -1105,7 +1112,7 @@ namespace Agilent_6632B
             {
                 if (Output_writetxt == true)
                 {
-                    string fileName = DateTime.Now.ToString("yyyy/MM/dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Output(date,V,A)" + ".txt";
+                    string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Output(date,V,A)" + ".txt";
                     TextWriter datatotxt = new StreamWriter(@fileName, true);
                     datatotxt.WriteLine(data);
                     datatotxt.Close();
@@ -1124,7 +1131,7 @@ namespace Agilent_6632B
             {
                 if (Output_writecsv == true)
                 {
-                    string fileName = DateTime.Now.ToString("yyyy/MM/dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Output(date,V,A)" + ".csv";
+                    string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Output(date,V,A)" + ".csv";
                     TextWriter datatotxt = new StreamWriter(@fileName, true);
                     datatotxt.WriteLine(voltage + "," + current + "," + date_time);
                     datatotxt.Close();
@@ -1139,7 +1146,7 @@ namespace Agilent_6632B
             {
                 if (Status_writetxt == true)
                 {
-                    string fileName = DateTime.Now.ToString("yyyy/MM/dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Status" + ".txt";
+                    string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "-" + RS232_Info.DeviceID + "-" + RS232_Info.COM_Port + "-Status" + ".txt";
                     TextWriter datatotxt = new StreamWriter(@fileName, true);
                     datatotxt.WriteLine(data);
                     datatotxt.Close();
